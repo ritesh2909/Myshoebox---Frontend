@@ -1,8 +1,5 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "build": {
-    "npm": {
-      "install": "--force"
-    }
-  }
+    "installCommand": "npm install"
+  
 }
