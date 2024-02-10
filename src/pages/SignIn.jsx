@@ -7,11 +7,13 @@ import { Context } from "../context/Context";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import  URL  from "../config/endpoint";
+import Otp from "./Otp";
 
 function SignIn() {
   const { user, isFetching, dispatch, error } = useContext(Context);
   const [internalError, setInternalError] = useState(null);
   const [mobileNumber, setMobileNumber] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
 
   const handleSubmit = async (e) => {
     console.log("called");
@@ -25,8 +27,7 @@ function SignIn() {
       if (res.status == 204) {
         // navigate to otp screen
         dispatch({ type: "OTP_SENT" });
-        const otpLoginURL = `/otp-login?mobile=${mobileNumber}`;
-        window.location.href = otpLoginURL;
+        setOtpSent(true)
       } else {
         // failure to send otp
         dispatch({ type: "OTP_FAILURE" });
@@ -60,7 +61,9 @@ function SignIn() {
 
   return (
     <>
-      <Navbar />
+    {otpSent ? <Otp /> : <>
+    
+    <Navbar />
       <div className="container">
         <div className="container">
           <div className="container">
@@ -130,6 +133,9 @@ function SignIn() {
           </div>
         </div>
       </div>
+
+    </>}
+     
     </>
   );
 }

@@ -44,10 +44,6 @@ function App() {
           path="/signin"
           element={!token ? <SignIn /> : <Navigate to="/" />}
         />
-        <Route
-          path="/otp-login"
-          element={!token ? <Otp /> : <Navigate to="/" />}
-        />
         <Route path="/" element={<Home />} />
         <Route
           path="/wishlist"
