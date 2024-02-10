@@ -93,12 +93,10 @@ function SingleProduct() {
       if (addToWish.status == 200) {
         window.alert(addToWish.data);
       } else if (addToWish.response.status == 401) {
-        console.log("Unauthenitcated");
         window.alert("Please try log in!");
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        console.log("Unauthenticated");
         window.alert("Please try logging in!");
         // Add your code to show the login/signup popup here
       } else {
@@ -136,7 +134,6 @@ function SingleProduct() {
       const productInfo = await axios.get(
         `${URL}/api/products/productId/${id}/?color=${color}`
       );
-      console.log(productInfo);
 
       setBaseProductInfo(productInfo.data.product);
       setVarients(productInfo.data.productVarients);

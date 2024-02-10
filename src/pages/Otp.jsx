@@ -6,10 +6,8 @@ import { Link, useLocation } from "react-router-dom";
 import { Context } from "../context/Context";
 import  URL  from "../config/endpoint";
 
-function Otp() {
+function Otp(props) {
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const mobileNumber = searchParams.get("mobile");
 
   const { token, isFetching, dispatch } = useContext(Context);
   const [otp, setOtp] = useState(["", "", "", ""]); // State to hold the OTP digits
@@ -33,19 +31,19 @@ function Otp() {
     e.preventDefault();
     let OTP = getOtp();
     if (OTP.length != 4) {
-      console.log("Invalid Otp!");
+      setError("Invalid Otp!")
     }
     try {
       const res = await axios.post(URL + "/api/auth/otp-login", {
-        mobile: mobileNumber,
+        mobile: props.mobile,
         otp: OTP,
       });
-      console.log(res);
       if (res.status == 200) {
-        // window.location.href = "/";
-
         dispatch({ type: "OTP_VERIFIED", payload: res.data });
+        window.location.href = "/";
       } else {
+        console.log(error);
+        dispatch({ type: "OTP_FAILURE" });
         setError(res?.response?.data);
       }
     } catch (error) {
@@ -73,6 +71,11 @@ function Otp() {
             ))}
           </div>
           <p className="resend-link">Resend OTP</p>
+          {error && (
+                        <p style={{ color: "red", marginLeft: "160px" }}>
+                          {error + "!"}
+                        </p>
+                      )}
           <button className="btn btn-outline-primary" onClick={handleSubmit}>
             Submit
           </button>

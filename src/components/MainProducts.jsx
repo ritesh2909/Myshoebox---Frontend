@@ -24,10 +24,8 @@ function MainProducts() {
 
   const updateCategoryFilter = async (e) => {
     let preAppliedCat = [...appliedCatFilter];
-    console.log(preAppliedCat);
     if (preAppliedCat.length > 0) {
       const index = preAppliedCat.indexOf(e.category._id);
-      console.log(index);
       if (index !== -1) {
         preAppliedCat.splice(index, 1);
       } else {
@@ -37,7 +35,6 @@ function MainProducts() {
       preAppliedCat.push(e.category._id);
     }
 
-    // console.log(preAppliedCat);
     setAppliedCatFilter(preAppliedCat);
   };
 
@@ -46,7 +43,6 @@ function MainProducts() {
 
     if (preAppliedBrand.length > 0) {
       const index = preAppliedBrand.indexOf(e.brand._id);
-      console.log(index);
       if (index !== -1) {
         preAppliedBrand.splice(index, 1);
       } else {
@@ -55,8 +51,6 @@ function MainProducts() {
     } else {
       preAppliedBrand.push(e.brand._id);
     }
-
-    // console.log(preAppliedBrand);
     setAppliedBrandFilter(preAppliedBrand);
   };
 
@@ -103,7 +97,6 @@ function MainProducts() {
         }
       );
       setAvailableProducts(productsRes.data);
-      console.log(productsRes.data);
     };
     fetchProducts();
   }, [appliedCatFilter, appliedBrandFilter, appliedColorFilter]);

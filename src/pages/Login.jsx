@@ -22,8 +22,14 @@ function Login() {
         email: data.email,
         password: data.password,
       });
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+      if (res.status == 204) {
+        dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       window.location.href = "/";
+      } else {
+        setInternalError(error.response.data);
+        dispatch({ type: "LOGIN_FAILURE" });
+      }
+      
     } catch (error) {
       if (error?.response?.data) {
         setInternalError(error.response.data);
