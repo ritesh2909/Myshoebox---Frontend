@@ -9,7 +9,8 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "vite",
-    "postinstall": "npm install --force"
+    "postinstall": "npm install --force",
+    "prebuild": "npm install --force"
   },
   "dependencies": {
     "@emotion/styled": "^11.11.0",
