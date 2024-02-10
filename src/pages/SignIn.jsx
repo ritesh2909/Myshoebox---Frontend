@@ -16,7 +16,6 @@ function SignIn() {
   const [otpSent, setOtpSent] = useState(false);
 
   const handleSubmit = async (e) => {
-    console.log("called");
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
@@ -61,7 +60,7 @@ function SignIn() {
 
   return (
     <>
-    {otpSent ? <Otp /> : <>
+    {otpSent ? <Otp mobile = {mobileNumber} /> : <>
     
     <Navbar />
       <div className="container">

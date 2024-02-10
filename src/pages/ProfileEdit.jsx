@@ -57,13 +57,11 @@ function Profile() {
         },
         { headers }
       );
-      console.log(res);
       if (res.status == 204) {
         try {
           const updatedUser = await axios.get(
             `${URL}/api/user/${parsedUserData._id}`
           );
-          console.log(updatedUser);
           dispatch({ type: "UPDATE_SUCCESS", payload: updatedUser.data });
           window.alert("Profile Updated!");
         } catch (error) {
