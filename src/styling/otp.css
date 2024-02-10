@@ -1,0 +1,54 @@
+.otp-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.otp-card {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.otp-input-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto;
+  width: 160px;
+}
+
+.otp-input-container input {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 0 5px;
+}
+
+.resend-link {
+  color: blue;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
