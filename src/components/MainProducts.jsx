@@ -13,11 +13,13 @@ function MainProducts() {
   const [appliedColorFilter, setAppliedColorFilter] = useState([]);
   const [appliedBrandFilter, setAppliedBrandFilter] = useState([]);
   const [appliedGenderFilter, setAppliedGenderFilter] = useState(searchParams.get('gender').toUpperCase());
+  const [appliedSortingOption, setAppliedSortingOption] = useState(null);
 
   const [availableBrands, setAvailableBrands] = useState([]);
   const [availableCategories, setAvailableCategories] = useState([]);
   const [availableProducts, setAvailableProducts] = useState([]);
   const [availableGender, setAvailableGender] = useState([]);
+  const [availableSortingOptions, setavailableSortingOptions] = useState([]);
 
   const [availableColors, setAvailableColors] = useState([]);
 
@@ -76,24 +78,36 @@ function MainProducts() {
     setAppliedColorFilter(preAppliedColor);
   };
 
+  const updateSortingOption = async (e) =>{
+    e.preventDefault();
+    setAppliedSortingOption(e.target.value)
+  }
+
   useEffect(() => {
     const fetchFilters = async (e) => {
       const filterRes = await axios.post(
         URL + "/api/products/filters",
         {}
       );
-      console.log(filterRes)
       setAvailableBrands(filterRes.data.brands);
       setAvailableCategories(filterRes.data.categories);
       setAvailableColors(filterRes.data.colors);
       setAvailableGender(filterRes.data.genders);
     };
+    const fetchSortingOptions = async (e) =>{
+      try {
+        const sortingOptionsRes = await axios.get(`${URL}/api/cms/sorting-options`);
+        setavailableSortingOptions(sortingOptionsRes.data);
+      } catch (error) {
+        console.log(error)
+      }
+    }
     fetchFilters();
+    fetchSortingOptions();
   }, []);
 
   useEffect(() => {
     const updateUrlGenderChange = async () => {
-      console.log("getting called again and again")
       setAppliedGenderFilter(searchParams.get("gender").toUpperCase());
     }
     updateUrlGenderChange();
@@ -108,17 +122,19 @@ function MainProducts() {
           categories: appliedCatFilter,
           brands: appliedBrandFilter,
           colors: appliedColorFilter,
-          gender: appliedGenderFilter
+          gender: appliedGenderFilter,
+          sortingOption: appliedSortingOption
         }
       );
-      // console.log(productsRes)
+      console.log(productsRes)
       setAvailableProducts(productsRes.data);
     };
     fetchProducts();
-  }, [appliedCatFilter, appliedBrandFilter, appliedColorFilter, appliedGenderFilter]);
+  }, [appliedCatFilter, appliedBrandFilter, appliedColorFilter, appliedGenderFilter, appliedSortingOption]);
 
   return (
     <>
+    {/* later todo top blue section -> stepper */}
       <header style={{ marginTop: "55px" }}>
         <div className="bg-primary">
           <div className="container py-4">
@@ -147,8 +163,7 @@ function MainProducts() {
         <div className="container">
           <div className="row">
             <>
-
-            {/* left sidebar */}
+             {/* left sidebar */}
 
               <div
                 className="col-lg-3"
@@ -323,7 +338,7 @@ function MainProducts() {
                                     htmlFor={colorItem.color}
                                     style={{ userSelect: "none" }}
                                   >
-                                    {colorItem.color}
+                                    {colorItem.color.charAt(0).toUpperCase() + colorItem.color.slice(1).toLowerCase()}
                                   </label>
                                   <span
                                     className="badge badge-secondary float-end"
@@ -589,21 +604,26 @@ function MainProducts() {
               </div>
             </>
 
-                  {/* product list */}
+             {/* product list */}
             <div className="col-lg-9">
               <header className="d-sm-flex align-items-center border-bottom mb-4 pb-3">
                 <strong className="d-block py-2">
                   {availableProducts.length} Items found{" "}
                 </strong>
+
+             {/* sorting list */}
                 <div className="ms-auto">
-                  <select className="form-select d-inline-block w-auto border pt-1">
-                    <option value="0">Best match</option>
-                    <option value="1">Recommended</option>
-                    <option value="2">High rated</option>
-                    <option value="3">Randomly</option>
+                  <select className="form-select d-inline-block w-auto border pt-1" onChange={(e)=>updateSortingOption(e)}  >
+                    {availableSortingOptions.length >0 && 
+                    availableSortingOptions.map((item)=>(
+                      <option key={item.key} value={item.key} >{item.value}</option>
+                    ))
+                    }
                   </select>
                 </div>
               </header>
+
+              {/* main product list item */}
 
               <div className="row">
                 {availableProducts &&
@@ -659,6 +679,7 @@ function MainProducts() {
 
               <hr />
 
+              {/* bottom pagination */}
               <nav
                 aria-label="Page navigation example"
                 className="d-flex justify-content-center mt-3"
