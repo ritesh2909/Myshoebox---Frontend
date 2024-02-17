@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../context/Context";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function ProductListItem(props) {
   if (!props.product) {

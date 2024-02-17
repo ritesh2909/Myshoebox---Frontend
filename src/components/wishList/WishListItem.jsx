@@ -4,7 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Context } from "../../context/Context";
-import  URL  from "../../config/endpoint";
+import  {URL}  from "../../config/endpoint";
 
 function WishListItem(props) {
   const { token, isFetching, error, dispatch } = useContext(Context);

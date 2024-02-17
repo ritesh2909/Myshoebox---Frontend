@@ -9,7 +9,7 @@ import { useLocation, useParams } from "react-router-dom";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import SimilarProductList from "../components/similarItems/SimilarProductList";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function SingleProduct() {
   const { token, isFetching, error, dispatch } = useContext(Context);

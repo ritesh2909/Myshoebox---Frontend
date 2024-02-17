@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import CategoryListItem from "./CategoryListItem";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function CategoryList() {
   const [categoryList, setCategoryList] = useState([]);

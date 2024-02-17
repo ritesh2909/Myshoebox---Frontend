@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from "react";
 import { Context } from "../context/Context";
 import axios from "axios";
 import Footer from "../components/Footer";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function Profile() {
   const { user, isFetching, error, dispatch } = useContext(Context);

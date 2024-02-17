@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Context } from "../context/Context";
 import { LoginFailure, LoginStart, LoginSuccess } from "../context/Action";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function Login() {
   const { user, isFetching, error, dispatch } = useContext(Context);

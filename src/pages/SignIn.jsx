@@ -6,7 +6,7 @@ import { CircularProgress } from "@material-ui/core";
 import { Context } from "../context/Context";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 import Otp from "./Otp";
 
 function SignIn() {

@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function CheckoutSection() {
   const { token, isFetching, error, dispatch } = useContext(Context);

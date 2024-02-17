@@ -7,26 +7,26 @@ function Navbar() {
 
 
         <div className="stashStyle" style={{ display: "flex", "justifyContent": "space-around" }}>
-          <Link className="navbar-brand" to="/" style={{marginLeft: "20px"}} >
+          <Link className="navbar-brand" to="/" style={{ marginLeft: "20px" }} >
             MyShoeBox
           </Link>
           <div className="container-fluid" style={{ display: "flex", justifyContent: "space-evenly" }} >
             <div className="collapse navbar-collapse" id="navbarSupportedContent"  >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" to={"/products?gender=Men"} >
                     MEN
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" to={"/products?gender=Women"} >
                     WOMEN
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" to={"/products?gender=Women"} >
                     KIDS
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">

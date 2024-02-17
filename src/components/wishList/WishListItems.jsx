@@ -5,7 +5,7 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import WishListItem from "./WishListItem";
 import { Context } from "../../context/Context";
-import  URL  from "../../config/endpoint";
+import  {URL}  from "../../config/endpoint";
 
 function WishListItems() {
   const { token, isFetching, error, dispatch } = useContext(Context);

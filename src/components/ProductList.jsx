@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import ProductListItem from "./ProductListItem";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function ProductList() {
   const [productList, setProductList] = useState([]);
