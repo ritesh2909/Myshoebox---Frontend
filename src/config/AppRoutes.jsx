@@ -28,7 +28,6 @@ import StripeCancel from "../pages/StripeCancel";
 import  {appRoutes}  from "./endpoint.js";
 
 function AppRoutes() {
-  console.log(appRoutes)
   const { token } = useContext(Context);
   return (
     <>

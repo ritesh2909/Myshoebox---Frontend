@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import ProductListItem from "./ProductListItem";
-import  {URL}  from "../config/endpoint";
+import { URL } from "../config/endpoint";
+import Shimmer from "./shimmer/Shimmer"
 
 function ProductList() {
   const [productList, setProductList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -13,6 +15,7 @@ function ProductList() {
       );
 
       setProductList(products.data);
+      setLoading(false)
     };
     getProducts();
   }, []);
@@ -20,17 +23,33 @@ function ProductList() {
   return (
     <>
       <section>
-        {productList.length > 0 && (
+        {loading ? (
           <div className="container my-5">
-            <header className="mb-4">
-              <h3>LATEST ARRIVALS</h3>
-            </header>
             <div className="row">
-              {productList.map((prod) => (
-                <ProductListItem key={prod.id} product={prod} />
+              {[...Array(4)].map((_, index) => (
+                <div className="col-lg-3 col-md-6 col-sm-6 d-flex" key={index}>
+                  <div className="card w-100 my-2 shadow-2-strong" >
+                    <div>
+                    <Shimmer style={{minHeight: "450px", height: "100%"}} /> 
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
+        ) : (
+          productList.length > 0 && (
+            <div className="container my-5">
+              <header className="mb-4">
+                <h3>LATEST ARRIVALS</h3>
+              </header>
+              <div className="row">
+                {productList.map((prod) => (
+                  <ProductListItem key={prod.id} product={prod} />
+                ))}
+              </div>
+            </div>
+          )
         )}
       </section>
     </>
