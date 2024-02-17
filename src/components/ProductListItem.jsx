@@ -75,7 +75,7 @@ function ProductListItem(props) {
     <div className="col-lg-3 col-md-6 col-sm-6 d-flex">
       <div className="card w-100 my-2 shadow-2-strong">
         <Link
-          to={`/${props.product.productId}?color=${props.product.defaultVarient.color}`}
+          to={`/product-info/${props.product.productId}?color=${props.product.defaultVarient.color}`}
         >
           <img
             src={props.product.defaultVarient.thumbnail}

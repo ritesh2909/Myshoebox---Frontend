@@ -615,7 +615,7 @@ function MainProducts() {
                     >
                       <div className="card w-100 my-2 shadow-2-strong">
                         <Link
-                          to={`/${prodItem.productId}/?color=${prodItem.color}`}
+                          to={`/product-info/${prodItem.productId}/?color=${prodItem.color}`}
                         >
                           <img
                             src={prodItem.thumbnail}
@@ -624,7 +624,7 @@ function MainProducts() {
                         </Link>
                         <div className="card-body d-flex flex-column">
                           <Link
-                            to={`/${prodItem.productId}/?color=${prodItem.color}`}
+                            to={`/product-info/${prodItem.productId}/?color=${prodItem.color}`}
                             style={{ textDecoration: "none", color: "black" }}
                           >
                             <div className="d-flex flex-row">
