@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { Context } from "../context/Context";
 import axios from "axios";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function BagSummary() {
   const { token, isFetching, error, dispatch } = useContext(Context);

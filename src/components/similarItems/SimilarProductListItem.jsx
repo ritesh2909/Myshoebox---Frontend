@@ -2,7 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { Context } from "../../context/Context";
 import { Link } from "react-router-dom";
-import  URL  from "../../config/endpoint";
+import  {URL}  from "../../config/endpoint";
 
 function SimilarProductListItem(props) {
   if (!props.product) {

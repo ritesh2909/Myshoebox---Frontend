@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BrandListItem from "./BrandListItem";
 import axios from "axios";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function BrandList() {
   const [brandList, setBrandList] = useState([]);

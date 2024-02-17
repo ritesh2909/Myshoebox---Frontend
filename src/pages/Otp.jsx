@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import "../styling/otp.css";
 import { Link, useLocation } from "react-router-dom";
 import { Context } from "../context/Context";
-import  URL  from "../config/endpoint";
+import  {URL}  from "../config/endpoint";
 
 function Otp(props) {
   const location = useLocation();

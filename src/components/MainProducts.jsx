@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import  URL  from "../config/endpoint";
+import { useLocation } from "react-router-dom";
+import {URL} from "../config/endpoint";
 
 import axios from "axios";
 function MainProducts() {
-  // const { gender } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
 
   const [appliedCatFilter, setAppliedCatFilter] = useState([]);
   const [appliedColorFilter, setAppliedColorFilter] = useState([]);
   const [appliedBrandFilter, setAppliedBrandFilter] = useState([]);
+  const [appliedGenderFilter, setAppliedGenderFilter] = useState(searchParams.get('gender').toUpperCase());
+
   const [availableBrands, setAvailableBrands] = useState([]);
   const [availableCategories, setAvailableCategories] = useState([]);
   const [availableProducts, setAvailableProducts] = useState([]);
   const [availableGender, setAvailableGender] = useState([]);
 
-  const [currentGender, setCurrentGender] = useState(null);
   const [availableColors, setAvailableColors] = useState([]);
 
   const changeGender = async (e) => {
-    setCurrentGender(e);
+    console.log("changing gender to:", e)
+    setAppliedGenderFilter(e);
   };
 
   const updateCategoryFilter = async (e) => {
@@ -78,6 +82,7 @@ function MainProducts() {
         URL + "/api/products/filters",
         {}
       );
+      console.log(filterRes)
       setAvailableBrands(filterRes.data.brands);
       setAvailableCategories(filterRes.data.categories);
       setAvailableColors(filterRes.data.colors);
@@ -87,19 +92,30 @@ function MainProducts() {
   }, []);
 
   useEffect(() => {
+    const updateUrlGenderChange = async () => {
+      console.log("getting called again and again")
+      setAppliedGenderFilter(searchParams.get("gender").toUpperCase());
+    }
+    updateUrlGenderChange();
+  }, [location])
+
+  useEffect(() => {
     const fetchProducts = async () => {
+
       const productsRes = await axios.post(
         URL + "/api/products/products",
         {
           categories: appliedCatFilter,
           brands: appliedBrandFilter,
           colors: appliedColorFilter,
+          gender: appliedGenderFilter
         }
       );
+      // console.log(productsRes)
       setAvailableProducts(productsRes.data);
     };
     fetchProducts();
-  }, [appliedCatFilter, appliedBrandFilter, appliedColorFilter]);
+  }, [appliedCatFilter, appliedBrandFilter, appliedColorFilter, appliedGenderFilter]);
 
   return (
     <>
@@ -131,6 +147,9 @@ function MainProducts() {
         <div className="container">
           <div className="row">
             <>
+
+            {/* left sidebar */}
+
               <div
                 className="col-lg-3"
                 style={{ borderRight: "0.1rem solid #cdcdcd" }}
@@ -161,13 +180,14 @@ function MainProducts() {
                                   name="gender"
                                   id={genderItem}
                                   value={genderItem}
+                                  checked={appliedGenderFilter == genderItem}
                                 />
                                 <label
                                   className="form-check-label"
                                   htmlFor={genderItem}
                                   style={{ userSelect: "none" }}
                                 >
-                                  {genderItem}
+                                  {genderItem.charAt(0) + genderItem.slice(1).toLowerCase()}
                                 </label>
                               </div>
                             </div>
@@ -569,6 +589,7 @@ function MainProducts() {
               </div>
             </>
 
+                  {/* product list */}
             <div className="col-lg-9">
               <header className="d-sm-flex align-items-center border-bottom mb-4 pb-3">
                 <strong className="d-block py-2">
@@ -581,18 +602,6 @@ function MainProducts() {
                     <option value="2">High rated</option>
                     <option value="3">Randomly</option>
                   </select>
-                  <div className="btn-group shadow-0 border">
-                    <a href="#" className="btn btn-light" title="List view">
-                      <i className="fa fa-bars fa-lg"></i>
-                    </a>
-                    <a
-                      href="#"
-                      className="btn btn-light active"
-                      title="Grid view"
-                    >
-                      <i className="fa fa-th fa-lg"></i>
-                    </a>
-                  </div>
                 </div>
               </header>
 
