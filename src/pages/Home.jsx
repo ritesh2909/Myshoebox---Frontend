@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 function Home() {
+  console.log("Home page rendered")
   return (
     <>
       <Navbar />

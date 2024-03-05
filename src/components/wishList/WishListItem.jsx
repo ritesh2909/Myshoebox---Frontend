@@ -14,6 +14,8 @@ function WishListItem(props) {
     "Content-Type": "application/json",
   };
 
+  console.log(props)
+
   const [size, setSize] = useState(null);
   const [availableSizes, setAvailableSizes] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -52,7 +54,7 @@ function WishListItem(props) {
   const removeFromWishList = async (e) => {
     try {
       const url = `${URL}/api/wishlist/v2/remove/${props.product.wishListItem._id}`;
-      const res = await axios.delete(url, { headers });
+      const res = await axios.patch(url,{} ,{ headers });
       if (res.status == 204) {
         window.alert("Item removed from Wishlist!");
         window.location.reload();

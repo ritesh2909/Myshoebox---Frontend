@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "../context/Context";
 import { useLocation } from "react-router-dom";
-import {URL} from "../config/endpoint";
+import { URL } from "../config/endpoint";
 
 import axios from "axios";
 function MainProducts() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-
+  const { token } = useContext(Context);
 
   const [appliedCatFilter, setAppliedCatFilter] = useState([]);
   const [appliedColorFilter, setAppliedColorFilter] = useState([]);
   const [appliedBrandFilter, setAppliedBrandFilter] = useState([]);
-  const [appliedGenderFilter, setAppliedGenderFilter] = useState(searchParams.get('gender').toUpperCase());
+
+  const [appliedGenderFilter, setAppliedGenderFilter] = useState(null);
+ 
   const [appliedSortingOption, setAppliedSortingOption] = useState(null);
 
   const [availableBrands, setAvailableBrands] = useState([]);
@@ -78,7 +82,7 @@ function MainProducts() {
     setAppliedColorFilter(preAppliedColor);
   };
 
-  const updateSortingOption = async (e) =>{
+  const updateSortingOption = async (e) => {
     e.preventDefault();
     setAppliedSortingOption(e.target.value)
   }
@@ -94,7 +98,7 @@ function MainProducts() {
       setAvailableColors(filterRes.data.colors);
       setAvailableGender(filterRes.data.genders);
     };
-    const fetchSortingOptions = async (e) =>{
+    const fetchSortingOptions = async (e) => {
       try {
         const sortingOptionsRes = await axios.get(`${URL}/api/cms/sorting-options`);
         setavailableSortingOptions(sortingOptionsRes.data);
@@ -104,6 +108,9 @@ function MainProducts() {
     }
     fetchFilters();
     fetchSortingOptions();
+    if (searchParams.get('gender')) {
+      setAppliedGenderFilter(searchParams.get('gender').toUpperCase())
+    }
   }, []);
 
   useEffect(() => {
@@ -132,9 +139,58 @@ function MainProducts() {
     fetchProducts();
   }, [appliedCatFilter, appliedBrandFilter, appliedColorFilter, appliedGenderFilter, appliedSortingOption]);
 
+  const addToWishList = async (e) => {
+    e.preventDefault();
+    if (!token) {
+      window.alert("Login to add to wishlist");
+      return;
+    }
+
+    try {
+      const addToWish = await axios.post(
+        URL + `/api/wishlist/addtowishlist/${props.product.defaultVarient.productId}/${user._id}`,
+        {
+          color: props.product.defaultVarient.color,
+          size: props.product.defaultVarient.size,
+        },
+        { headers }
+      );
+
+      if (addToWish.status == 200) {
+        window.alert(addToWish.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addToCart = async (e) => {
+    e.preventDefault();
+    if (!token) {
+      window.alert("Login to add to Cart");
+      return;
+    }
+
+    try {
+      const addToCart = await axios.post(
+        URL + `/api/cart/add-to-cart`,
+        { color: color, size: size, productId: baseProductInfo.productId },
+        { headers }
+      );
+
+      if (addToCart.status == 200) {
+        window.alert(addToCart.data);
+      } else if (addToCart.response.status == 401) {
+        window.alert("Please try log in!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
-    {/* later todo top blue section -> stepper */}
+      {/* later todo top blue section -> stepper */}
       <header style={{ marginTop: "55px" }}>
         <div className="bg-primary">
           <div className="container py-4">
@@ -163,7 +219,7 @@ function MainProducts() {
         <div className="container">
           <div className="row">
             <>
-             {/* left sidebar */}
+              {/* left sidebar */}
 
               <div
                 className="col-lg-3"
@@ -604,20 +660,20 @@ function MainProducts() {
               </div>
             </>
 
-             {/* product list */}
+            {/* product list */}
             <div className="col-lg-9">
               <header className="d-sm-flex align-items-center border-bottom mb-4 pb-3">
                 <strong className="d-block py-2">
                   {availableProducts.length} Items found{" "}
                 </strong>
 
-             {/* sorting list */}
+                {/* sorting list */}
                 <div className="ms-auto">
-                  <select className="form-select d-inline-block w-auto border pt-1" onChange={(e)=>updateSortingOption(e)}  >
-                    {availableSortingOptions.length >0 && 
-                    availableSortingOptions.map((item)=>(
-                      <option key={item.key} value={item.key} >{item.value}</option>
-                    ))
+                  <select className="form-select d-inline-block w-auto border pt-1" onChange={(e) => updateSortingOption(e)}  >
+                    {availableSortingOptions.length > 0 &&
+                      availableSortingOptions.map((item) => (
+                        <option key={item.key} value={item.key} >{item.value}</option>
+                      ))
                     }
                   </select>
                 </div>
@@ -640,6 +696,7 @@ function MainProducts() {
                           <img
                             src={prodItem.thumbnail}
                             className="card-img-top"
+                            style={{ minHeight: "410px" }}
                           />
                         </Link>
                         <div className="card-body d-flex flex-column">
@@ -657,18 +714,22 @@ function MainProducts() {
                             </div>
                             <p className="card-text">{prodItem.title}</p>
                           </Link>
-                          <div className="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+                          <div className="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto" style={{ justifyContent: "space-around" }} >
                             <a
                               href="#!"
                               className="btn btn-primary shadow-0 me-1"
+                              onClick={addToCart}
+                              style={{ marginBottom: "15px" }}
                             >
                               Add to cart
                             </a>
                             <a
                               href="#!"
                               className="btn btn-light border icon-hover px-2 pt-2"
+                              onClick={addToWishList}
+                              style={{ marginBottom: "15px" }}
                             >
-                              <i className="fas fa-heart fa-lg text-secondary px-1"></i>
+                              Love it!
                             </a>
                           </div>
                         </div>

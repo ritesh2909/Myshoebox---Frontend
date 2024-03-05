@@ -3,14 +3,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../context/Context";
-import  {URL}  from "../config/endpoint";
+import { URL } from "../config/endpoint";
 
 function ProductListItem(props) {
   if (!props.product) {
     return null; // not products available
   }
-  const { token } = useContext(Context);
-
+  console.log(props.product)
+  const { token, isFetching, error, dispatch } = useContext(Context);
+  const headers = {
+    authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
   const addToWishList = async (e) => {
     e.preventDefault();
     if (!token) {
@@ -19,20 +23,27 @@ function ProductListItem(props) {
     }
 
     try {
-      const addToWish = await axios.post(
-        URL + `/api/wishlist/addtowishlist/${props.product.defaultVarient.productId}/${user._id}`,
-        {
-          color: props.product.defaultVarient.color,
-          size: props.product.defaultVarient.size,
-        },
+      const addToWish = await axios.patch(
+        `${URL}/api/wishlist/v2/addtowishlist/${props.product.defaultVarient._id}`,
+        {},
         { headers }
       );
-
       if (addToWish.status == 200) {
         window.alert(addToWish.data);
+      } else if (addToWish.response.status == 401) {
+        window.alert("Please try log in!");
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
+      if (error.response && error.response.status == 401) {
+        window.alert("Please try logging in!");
+        dispatch({ type: "LOGOUT"})
+        localStorage.removeItem('token');
+
+        // Add your code to show the login/signup popup here
+      } else {
+        console.log("Other error:", error);
+      }
     }
   };
 
@@ -44,11 +55,13 @@ function ProductListItem(props) {
     }
 
     try {
+      console.log(props.product.productId)
       const addToCart = await axios.post(
         URL + `/api/cart/add-to-cart`,
-        { color: color, size: size, productId: baseProductInfo.productId },
+        { color: props.product.defaultVarient.color, size: props.product.defaultVarient.size, productId: props.product.productId },
         { headers }
       );
+      console.log(addToCart)
 
       if (addToCart.status == 200) {
         window.alert(addToCart.data);
@@ -56,7 +69,17 @@ function ProductListItem(props) {
         window.alert("Please try log in!");
       }
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 401) {
+        window.alert("Please try logging in!");
+        dispatch({ type: "LOGOUT" })
+        // Add your code to show the login/signup popup here
+      } else if (error.response.status == 400) {
+        window.alert(error.response.data)
+      } 
+      else {
+        console.log("Other error:", error);
+      }
+      
     }
   };
 
@@ -65,11 +88,6 @@ function ProductListItem(props) {
   const parsedUserData = JSON.parse(storedUserData);
   const authToken = parsedUserData?.token;
 
-  const headers = {
-    authorization: `Bearer ${authToken}`,
-    "Content-Type": "application/json",
-  };
-  
 
   return (
     <div className="col-lg-3 col-md-6 col-sm-6 d-flex">
@@ -114,7 +132,7 @@ function ProductListItem(props) {
         </div>
       </div>
     </div>
-   
+
   );
 }
 
