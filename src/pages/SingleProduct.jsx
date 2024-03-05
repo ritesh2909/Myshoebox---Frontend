@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import NotFound from "../pages/NotFound";
 import { useContext, useState, useEffect } from "react";
 import { Context } from "../context/Context";
 import axios from "axios";
@@ -9,15 +10,10 @@ import { useLocation, useParams } from "react-router-dom";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import SimilarProductList from "../components/similarItems/SimilarProductList";
-import  {URL}  from "../config/endpoint";
+import { URL } from "../config/endpoint";
 
 function SingleProduct() {
   const { token, isFetching, error, dispatch } = useContext(Context);
-
-  // accessing token
-  const storedUserData = localStorage.getItem("token");
-  const parsedUserData = JSON.parse(storedUserData);
-  const authToken = parsedUserData;
   const headers = {
     authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
@@ -43,6 +39,8 @@ function SingleProduct() {
   const [description, setDescription] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [availableSizes, setAvailableSizes] = useState([]);
+
+  const [notFound, setNotFound] = useState(false)
 
   const getAvailableSizes = async (varients) => {
     let sizes = [];
@@ -84,9 +82,8 @@ function SingleProduct() {
     }
 
     try {
-      const addToWish = await axios.post(
-        `${URL}/api/wishlist/addtowishlist/${id}/`,
-        { color: color, size: size },
+      const addToWish = await axios.patch(
+        `${URL}/api/wishlist/v2/addtowishlist/${defaultVarient._id}`,
         { headers }
       );
 
@@ -96,6 +93,7 @@ function SingleProduct() {
         window.alert("Please try log in!");
       }
     } catch (error) {
+      console.log(error)
       if (error.response && error.response.status === 401) {
         window.alert("Please try logging in!");
         // Add your code to show the login/signup popup here
@@ -125,36 +123,53 @@ function SingleProduct() {
         window.alert("Please try log in!");
       }
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 401) {
+        window.alert("Please try logging in!");
+        dispatch({ type: "LOGOUT" })
+        // Add your code to show the login/signup popup here
+      } else {
+        console.log("Other error:", error);
+      }
     }
   };
 
   useEffect(() => {
     const getProductInfo = async () => {
+      let apiUrl = URL + "/api/products/productId/" + id + "/?color=" + color;
       const productInfo = await axios.get(
-        `${URL}/api/products/productId/${id}/?color=${color}`
+        apiUrl
       );
 
-      setBaseProductInfo(productInfo.data.product);
-      setVarients(productInfo.data.productVarients);
-      setDefaultVarient(productInfo.data.defaultVarient);
-      setThumbNail(productInfo.data.defaultVarient.thumbnail);
-      setImages(productInfo.data.defaultVarient.images);
-      setTitle(productInfo.data.defaultVarient.title);
-      setRating(productInfo.data.defaultVarient.rating);
-      setPrice(productInfo.data.defaultVarient.price);
-      setDiscountPrice(productInfo.data.defaultVarient.discountPrice);
-      setSoldCount(productInfo.data.defaultVarient.soldCount);
-      setDescription(productInfo.data.defaultVarient.description);
-      setSize(productInfo.data.defaultVarient.size);
-      setBrand(productInfo.data.product.brand.name);
-      setAvailableSizes(
-        await getAvailableSizes(productInfo.data.productVarients)
-      );
+      if (productInfo.data.defaultVarient != null) {
+        setBaseProductInfo(productInfo.data.product);
+        setVarients(productInfo.data.productVarients);
+        setDefaultVarient(productInfo.data.defaultVarient);
+        setThumbNail(productInfo.data.defaultVarient.thumbnail);
+        setImages(productInfo.data.defaultVarient.images);
+        setTitle(productInfo.data.defaultVarient.title);
+        setRating(productInfo.data.defaultVarient.rating);
+        setPrice(productInfo.data.defaultVarient.price);
+        setDiscountPrice(productInfo.data.defaultVarient.discountPrice);
+        setSoldCount(productInfo.data.defaultVarient.soldCount);
+        setDescription(productInfo.data.defaultVarient.description);
+        setSize(productInfo.data.defaultVarient.size);
+        setBrand(productInfo.data.product.brand.name);
+        setAvailableSizes(
+          await getAvailableSizes(productInfo.data.productVarients)
+        );
+      } else {
+        setNotFound(true)
+      }
     };
 
     getProductInfo();
   }, []);
+
+  if (notFound) {
+    return (<>
+      <NotFound />
+    </>)
+  }
 
   return (
     <>

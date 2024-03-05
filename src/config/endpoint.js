@@ -8,7 +8,6 @@ const appRoutes = {
   SingleProduct: "/product-info/:id",
   Home: "/",
   Wishlist: "/wishlist",
-  Bag: "/bag",
   ProfileEdit: "/profile-edit",
   Failure: "/error",
   GetHelp: "/get-help",
@@ -19,6 +18,7 @@ const appRoutes = {
   StripeCancel: "/cancel",
   StripeCheckout: "/stripe"
 }
+
 
 
 export {appRoutes,URL};

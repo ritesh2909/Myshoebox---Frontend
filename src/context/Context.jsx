@@ -17,6 +17,8 @@ export const ContextProvider = ({ children }) => {
     localStorage.setItem("token", JSON.stringify(state.token));
   }, [state.token]);
 
+  
+
   return (
     <Context.Provider
       value={{

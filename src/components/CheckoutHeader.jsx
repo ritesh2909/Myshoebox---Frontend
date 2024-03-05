@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
 
 function CheckoutHeader() {
   return (
     <>
-      <header>
+      <Navbar style={{}} />
+      <header >
         <div className="bg-primary">
           <div className="container py-4">
             <nav className="d-flex">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { appRoutes } from "../config/endpoint";
 function Navbar() {
   return (
     <>
@@ -7,11 +8,13 @@ function Navbar() {
 
 
         <div className="stashStyle" style={{ display: "flex", "justifyContent": "space-around" }}>
+          {/* logo */}
           <Link className="navbar-brand" to="/" style={{ marginLeft: "20px" }} >
             MyShoeBox
           </Link>
           <div className="container-fluid" style={{ display: "flex", justifyContent: "space-evenly" }} >
             <div className="collapse navbar-collapse" id="navbarSupportedContent"  >
+              {/* left nav */}
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
                   <Link className="nav-link" to={"/products?gender=Men"} >
@@ -39,6 +42,8 @@ function Navbar() {
                   </a>
                 </li>
               </ul>
+
+              {/* search box */}
               <form className="d-flex" role="search" style={{ "marginLeft": "130px" }} >
                 <input
                   className="form-control me-8"
@@ -51,15 +56,17 @@ function Navbar() {
                   Search
                 </button>
               </form>
+              
+              {/* right nav */}
               <div className="collapse navbar-collapse" style={{ "marginLeft": "15rem" }}  >
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                   <li className="nav-item">
-                    <Link className="nav-link" to={"/wishlist"}>
+                    <Link className="nav-link" to={appRoutes.Wishlist}>
                       WISHLIST
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to={"/bag"}>
+                    <Link className="nav-link" to={appRoutes.Cart}>
                       BAG
                     </Link>
                   </li>

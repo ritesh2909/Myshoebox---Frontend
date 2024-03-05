@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import  {URL}  from "../config/endpoint";
+import CheckoutHeader from "../components/CheckoutHeader";
 
 function CheckoutSection() {
   const { token, isFetching, error, dispatch } = useContext(Context);
@@ -43,6 +44,7 @@ function CheckoutSection() {
 
   return (
     <>
+    <CheckoutHeader />
       <section className="bg-light py-5">
         <div className="container">
           <div className="row">

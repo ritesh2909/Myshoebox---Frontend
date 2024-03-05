@@ -52,8 +52,9 @@ function AppRoutes() {
             element={token ? <Wishlist /> : <Navigate to={appRoutes.SignIn} />}
           />
           <Route
-            path={appRoutes.Bag}
-            element={token ? <Bag /> : <Navigate to={AppRoutes.SignIn} />}
+            path={appRoutes.Cart}
+            element={<Cart/>}
+            // element={token ? <Cart /> : <Navigate to={appRoutes.SignIn} />}
           />
           <Route
             path={appRoutes.ProfileEdit}
@@ -63,7 +64,6 @@ function AppRoutes() {
           <Route path={appRoutes.GetHelp} element={<GetHelp />} />
           <Route path={appRoutes.ProductsList} element={<Products />} />
           <Route path={appRoutes.Checkout} element={<Checkout />} />
-          <Route path={appRoutes.Cart} element={<Cart />} />
           <Route path={appRoutes.StripeSuccess} element={<StripeSuccess />} />
           <Route path={appRoutes.StripeCancel} element={<StripeCancel />} />
           <Route path={appRoutes.StripeCheckout} element={<StripeCheckout />} />
