@@ -2,35 +2,33 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../context/Context";
-import { useLocation } from "react-router-dom";
 import { URL } from "../config/endpoint";
+import { useLocation, useParams } from 'react-router-dom';
+
 
 import axios from "axios";
 function MainProducts() {
+  const { gender } = useParams();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
+  const hasGenderParam = searchParams.has('gender');
+
   const { token } = useContext(Context);
 
   const [appliedCatFilter, setAppliedCatFilter] = useState([]);
   const [appliedColorFilter, setAppliedColorFilter] = useState([]);
   const [appliedBrandFilter, setAppliedBrandFilter] = useState([]);
 
-  const [appliedGenderFilter, setAppliedGenderFilter] = useState(null);
- 
   const [appliedSortingOption, setAppliedSortingOption] = useState(null);
 
   const [availableBrands, setAvailableBrands] = useState([]);
   const [availableCategories, setAvailableCategories] = useState([]);
   const [availableProducts, setAvailableProducts] = useState([]);
-  const [availableGender, setAvailableGender] = useState([]);
   const [availableSortingOptions, setavailableSortingOptions] = useState([]);
 
   const [availableColors, setAvailableColors] = useState([]);
 
-  const changeGender = async (e) => {
-    console.log("changing gender to:", e)
-    setAppliedGenderFilter(e);
-  };
+
 
   const updateCategoryFilter = async (e) => {
     let preAppliedCat = [...appliedCatFilter];
@@ -96,7 +94,6 @@ function MainProducts() {
       setAvailableBrands(filterRes.data.brands);
       setAvailableCategories(filterRes.data.categories);
       setAvailableColors(filterRes.data.colors);
-      setAvailableGender(filterRes.data.genders);
     };
     const fetchSortingOptions = async (e) => {
       try {
@@ -108,28 +105,22 @@ function MainProducts() {
     }
     fetchFilters();
     fetchSortingOptions();
-    if (searchParams.get('gender')) {
-      setAppliedGenderFilter(searchParams.get('gender').toUpperCase())
-    }
   }, []);
 
   useEffect(() => {
-    const updateUrlGenderChange = async () => {
-      setAppliedGenderFilter(searchParams.get("gender").toUpperCase());
+    let gender;
+    if (hasGenderParam) {
+      gender = searchParams.get("gender")
     }
-    updateUrlGenderChange();
-  }, [location])
-
-  useEffect(() => {
     const fetchProducts = async () => {
-
+      console.log(gender)
       const productsRes = await axios.post(
         URL + "/api/products/products",
         {
           categories: appliedCatFilter,
           brands: appliedBrandFilter,
           colors: appliedColorFilter,
-          gender: appliedGenderFilter,
+          gender: gender,
           sortingOption: appliedSortingOption
         }
       );
@@ -137,7 +128,7 @@ function MainProducts() {
       setAvailableProducts(productsRes.data);
     };
     fetchProducts();
-  }, [appliedCatFilter, appliedBrandFilter, appliedColorFilter, appliedGenderFilter, appliedSortingOption]);
+  }, [appliedCatFilter, appliedBrandFilter, appliedColorFilter, appliedSortingOption, location]);
 
   const addToWishList = async (e) => {
     e.preventDefault();
@@ -218,55 +209,16 @@ function MainProducts() {
       <section className="">
         <div className="container">
           <div className="row">
+            {/* left sidebar */}
             <>
-              {/* left sidebar */}
-
               <div
                 className="col-lg-3"
                 style={{ borderRight: "0.1rem solid #cdcdcd" }}
               >
                 <div id="navbarSupportedContent1">
                   <div id="accordionPanelsStayOpenExample">
-                    {/* gender */}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-evenly",
-                      }}
-                    >
-                      <h5 style={{ marginLeft: "14px" }}>GENDER</h5>
-                      <div>
-                        {availableGender &&
-                          availableGender.length > 0 &&
-                          availableGender.map((genderItem) => (
-                            <div
-                              onClick={() => changeGender(genderItem)}
-                              key={genderItem}
-                            >
-                              <div className="form-check">
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  name="gender"
-                                  id={genderItem}
-                                  value={genderItem}
-                                  checked={appliedGenderFilter == genderItem}
-                                />
-                                <label
-                                  className="form-check-label"
-                                  htmlFor={genderItem}
-                                  style={{ userSelect: "none" }}
-                                >
-                                  {genderItem.charAt(0) + genderItem.slice(1).toLowerCase()}
-                                </label>
-                              </div>
-                            </div>
-                          ))}
-                      </div>
-                    </div>
-                    <br />
 
+                    <br />
                     {/* categories */}
                     <div
                       style={{
@@ -276,6 +228,7 @@ function MainProducts() {
                         justifyItems: "center",
                       }}
                     >
+
                       <h5 style={{ marginLeft: "14px" }}>CATEGORIES</h5>
                       <div>
                         {availableCategories &&

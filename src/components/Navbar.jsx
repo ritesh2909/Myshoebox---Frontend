@@ -27,7 +27,7 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to={"/products?gender=Women"} >
+                  <Link className="nav-link" to={"/products?gender=Kids"} >
                     KIDS
                   </Link>
                 </li>
