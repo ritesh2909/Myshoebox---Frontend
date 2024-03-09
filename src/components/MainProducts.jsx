@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { Context } from "../context/Context";
 import { URL } from "../config/endpoint";
 import { useLocation, useParams } from 'react-router-dom';
+import NoProductFound from "./NoProductFound";
 
 
 import axios from "axios";
@@ -27,8 +28,6 @@ function MainProducts() {
   const [availableSortingOptions, setavailableSortingOptions] = useState([]);
 
   const [availableColors, setAvailableColors] = useState([]);
-
-
 
   const updateCategoryFilter = async (e) => {
     let preAppliedCat = [...appliedCatFilter];
@@ -614,7 +613,12 @@ function MainProducts() {
             </>
 
             {/* product list */}
-            <div className="col-lg-9">
+
+            {availableProducts.length === 0 &&
+              <header className="d-sm-flex align-items-center border-bottom mb-4 pb-3"> <NoProductFound /></header>
+            }
+
+            {availableProducts.length > 0 && <div className="col-lg-9">
               <header className="d-sm-flex align-items-center border-bottom mb-4 pb-3">
                 <strong className="d-block py-2">
                   {availableProducts.length} Items found{" "}
@@ -736,7 +740,10 @@ function MainProducts() {
                   </li>
                 </ul>
               </nav>
-            </div>
+            </div>}
+
+
+
           </div>
         </div>
       </section>
