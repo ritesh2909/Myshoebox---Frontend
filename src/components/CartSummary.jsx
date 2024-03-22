@@ -2,9 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function CartSummary(props) {
-  const cartProducts = props.cartProducts;
-  console.log(cartProducts[0])
-
+  const cartProduct = props.cartProducts;
+  const transaction = props.transaction;
+  console.log(cartProduct)
+  // console.log(transaction)
   return (
     <>
       <section className="bg-light my-5">
@@ -17,24 +18,26 @@ function CartSummary(props) {
 
                   {/* cart items */}
 
-                  {cartProducts.map((item) => (
+                  {cartProduct.map((item) => (
                     <div className="row gy-3 mb-4">
                       <div className="col-lg-5">
                         <div className="me-lg-5">
                           <div className="d-flex">
 
-                            <img
-                              src={item.thumbnail}
-                              className="border rounded me-3"
-                              style={{ width: "96px", height: "96px" }}
-                            />
+                            <Link to={`/product-info/${item.productInfoId.productId}?color=${item.productInfoId.color}`}  >
+                              <img
+                                src={item.productInfoId.thumbnail}
+                                className="border rounded me-3"
+                                style={{ width: "96px", height: "96px" }}
+                              />
+                            </Link>
                             <div className="">
-                              <p><Link to={""} style={{ textDecoration: "none", color: "black" }} >{item.title}</Link></p>
+                              <p><Link to={`/product-info/${item.productInfoId.productId}?color=${item.productInfoId.color}`} style={{ width: "100%", textDecoration: "none", color: "black" }} >{item.productInfoId.title}</Link></p>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+                      {/* <div className="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
                         <div className="">
                           <select
                             style={{ width: "100px" }}
@@ -70,7 +73,7 @@ function CartSummary(props) {
                             Remove
                           </a>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   ))}
 
@@ -121,31 +124,44 @@ function CartSummary(props) {
                 <div className="card-body">
                   <div className="d-flex justify-content-between">
                     <p className="mb-2">Total price:</p>
-                    <p className="mb-2">$329.00</p>
+                    <p className="mb-2">₹ {Number(transaction.amount.toFixed(2))}</p>
                   </div>
                   <div className="d-flex justify-content-between">
-                    <p className="mb-2">Discount:</p>
-                    <p className="mb-2 text-success">-$60.00</p>
+                    {transaction.discounts.map((item) => (
+                      <>
+                        <p className="mb-2">Discount:</p>
+                        <p className="mb-2 text-success">-₹ {Number(item.totalAmount.toFixed(2))}</p>
+                      </>
+                    ))}
+                  </div>
+
+                  <div className="d-flex justify-content-between" style={{ marginTop: "20px" }}>
+                    <p className="mb-2">Final Amount</p>
+                    <p className="mb-2">₹ {Number(transaction.totalAmount.toFixed(2)) - Number(transaction.taxAmount.toFixed(2))}</p>
                   </div>
                   <div className="d-flex justify-content-between">
-                    <p className="mb-2">TAX:</p>
-                    <p className="mb-2">$14.00</p>
+                    <p className="mb-2">TAX (18%)</p>
+                    <p className="mb-2">₹ {Number(transaction.taxAmount.toFixed(2))}</p>
                   </div>
                   <hr />
                   <div className="d-flex justify-content-between">
                     <p className="mb-2">Total price:</p>
-                    <p className="mb-2 fw-bold">$283.00</p>
+                    <p className="mb-2 fw-bold">₹ {Number(transaction.totalAmount.toFixed(2))}</p>
                   </div>
 
                   <div className="mt-3">
-                    <a href="#" className="btn btn-success w-100 shadow-0 mb-2">
-                      {" "}
-                      Make Purchase{" "}
-                    </a>
-                    <a href="#" className="btn btn-light w-100 border mt-2">
-                      {" "}
-                      Back to shop{" "}
-                    </a>
+                    <Link to={"/checkout"} >
+                      <a href="#" className="btn btn-success w-100 shadow-0 mb-2">
+                        {" "}
+                        Make Purchase{" "}
+                      </a>
+                    </Link>
+                    <Link to={"/"} >
+                      <a href="#" className="btn btn-light w-100 border mt-2">
+                        {" "}
+                        Back to shop{" "}
+                      </a>
+                    </Link>
                   </div>
                 </div>
               </div>

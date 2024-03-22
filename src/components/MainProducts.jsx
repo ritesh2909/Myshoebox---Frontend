@@ -111,6 +111,7 @@ function MainProducts() {
     if (hasGenderParam) {
       gender = searchParams.get("gender")
     }
+    console.log(gender)
     const fetchProducts = async () => {
       console.log(gender)
       const productsRes = await axios.post(
