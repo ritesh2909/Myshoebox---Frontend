@@ -18,6 +18,7 @@ function Cart() {
   };
 
   const [cartItems, setCartItems] = useState([]);
+  const [transactionInfo, setTransactionInfo] = useState({})
   useEffect(() => {
     const getCartInfo = async () => {
       if (!token) {
@@ -29,8 +30,8 @@ function Cart() {
 
         const url = `${URL}/api/cart/getCartItem`;
         const cartInfo = await axios.get(url, { headers });
-        console.log(cartInfo)
-        setCartItems(cartInfo.data);
+        setCartItems(cartInfo.data.cartItem);
+        setTransactionInfo(cartInfo.data.transaction)
       } catch (error) {
         if (error.response && error.response.status === 401) {
           window.alert("Please try logging in!");
@@ -48,7 +49,7 @@ function Cart() {
     <>
       <Navbar />
       <CartHeader />
-      {cartItems.length > 0 ? <CartSummary cartProducts={cartItems} /> : <>
+      {cartItems.length > 0 ? <CartSummary cartProducts={cartItems} transaction={transactionInfo} /> : <>
 
     Add items to cart
 

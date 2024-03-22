@@ -5,22 +5,58 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
-import  {URL}  from "../config/endpoint";
+import { URL } from "../config/endpoint";
 import CheckoutHeader from "../components/CheckoutHeader";
 
 function CheckoutSection() {
   const { token, isFetching, error, dispatch } = useContext(Context);
+  const headers = {
+    authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
 
-  const [stripeProducts, setStripeProducts] = useState([
-    {
-      name: "Go FullStack with KnowledgeHut",
-      price: 1000,
-      productOwner: "KnowledgeHut",
-      description:
-        "This beginner-friendly Full-Stack Web Development Course is offered online in blended learning mode, and also in an on-demand self-paced format.",
-      quantity: 1,
-    },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+  const [transaction, setTransaction] = useState(null)
+  const [stripeProducts, setStripeProducts] = useState([]);
+  useEffect(() => {
+    const getCartInfo = async () => {
+      if (!token) {
+        window.alert("Login to add items to cart!");
+        return null;
+      }
+
+      try {
+
+        const url = `${URL}/api/cart/getCartItem`;
+        const cartInfo = await axios.get(url, { headers });
+        setCartItems(cartInfo.data.cartItem);
+        // console.log(cartInfo)
+        setTransaction(cartInfo.data.transaction)
+        let cartItems = [];
+        for (let item of cartInfo.data.cartItem) {
+          cartItems.push({
+            name: item.productInfoId.title,
+            price: item.productInfoId.discountPrice,
+            productOwner: "Myshoebox",
+            description: item.productInfoId.description
+          })
+        }
+        setStripeProducts(cartItems);
+        console.log(transaction)
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          window.alert("Please try logging in!");
+          dispatch({ type: "LOGOUT" })
+        } else {
+          console.log("Other error:", error);
+        }
+        console.log(error);
+      }
+    };
+    getCartInfo();
+  }, []);
+
+
   const makePayment = async (e) => {
     e.preventDefault();
     const stripe = await loadStripe(
@@ -29,7 +65,7 @@ function CheckoutSection() {
 
     const response = await axios.post(
       URL + "/api/payment/create-payment-intent",
-      { products: stripeProducts }
+      { amount: transaction.totalAmount }
     );
 
     let session = response.data;
@@ -42,9 +78,10 @@ function CheckoutSection() {
     }
   };
 
+
   return (
     <>
-    <CheckoutHeader />
+      <CheckoutHeader />
       <section className="bg-light py-5">
         <div className="container">
           <div className="row">
@@ -222,125 +259,127 @@ function CheckoutSection() {
                 </div>
               </div>
             </div>
-            <div className="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
-              <div
-                className="ms-lg-4 mt-4 mt-lg-0"
-                style={{ maxWidth: "320px" }}
-              >
-                <h6 className="mb-3">Summary</h6>
-                <div className="d-flex justify-content-between">
-                  <p className="mb-2">Total price:</p>
-                  <p className="mb-2">$195.90</p>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <p className="mb-2">Discount:</p>
-                  <p className="mb-2 text-danger">- $60.00</p>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <p className="mb-2">Shipping cost:</p>
-                  <p className="mb-2">+ $14.00</p>
-                </div>
-                <hr />
-                <div className="d-flex justify-content-between">
-                  <p className="mb-2">Total price:</p>
-                  <p className="mb-2 fw-bold">$149.90</p>
-                </div>
+            {/* transaction summary */}
+            {transaction &&
+              <div className="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+                <div
+                  className="ms-lg-4 mt-4 mt-lg-0"
+                  style={{ maxWidth: "320px" }}
+                >
+                  <h6 className="mb-3">Summary</h6>
+                  <div className="d-flex justify-content-between">
+                    <p className="mb-2">Total price:</p>
+                    <p className="mb-2">₹ {Number(transaction.amount.toFixed(2))}</p>
+                  </div>
+                  {transaction.discounts.map((item) => (
+                    <div className="d-flex justify-content-between">
 
-                <div className="input-group mt-3 mb-4">
-                  <input
-                    type="text"
-                    className="form-control border"
-                    name=""
-                    placeholder="Promo code"
-                  />
-                  <button className="btn btn-light text-primary border">
-                    Apply
-                  </button>
-                </div>
+                      <p className="mb-2">Discount:</p>
+                      <p className="mb-2 text-danger">-₹ {Number(item.totalAmount.toFixed(2))} </p>
+                    </div>
+                  ))}
 
-                <hr />
-                <h6 className="text-dark my-4">Items in cart</h6>
+                  <div className="d-flex justify-content-between" style={{ marginTop: "20px" }}>
+                    <p className="mb-2">Final Amount</p>
+                    <p className="mb-2">₹ {Number(transaction.totalAmount.toFixed(2)) - Number(transaction.taxAmount.toFixed(2))}</p>
+                  </div>
 
-                <div className="d-flex align-items-center mb-4">
-                  <div className="me-3 position-relative">
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                      1
-                    </span>
-                    <img
-                      src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/7.webp"
-                      style={{ height: "96px", width: "96x" }}
-                      className="img-sm rounded border"
-                    />
+                  <div className="d-flex justify-content-between">
+                    <p className="mb-2">TAX (18%)</p>
+                    <p className="mb-2">₹ {Number(transaction.taxAmount.toFixed(2))}</p>
                   </div>
-                  <div className="">
-                    <a href="#" className="nav-link">
-                      Gaming Headset with Mic <br />
-                      Darkblue color
-                    </a>
-                    <div className="price text-muted">Total: $295.99</div>
+                  <hr />
+                  <div className="d-flex justify-content-between">
+                    <p className="mb-2">Total price:</p>
+                    <p className="mb-2 fw-bold">₹ {Number(transaction.totalAmount.toFixed(2))}</p>
                   </div>
-                </div>
 
-                <div className="d-flex align-items-center mb-4">
-                  <div className="me-3 position-relative">
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                      1
-                    </span>
-                    <img
-                      src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/7.webp"
-                      style={{ height: "96px", width: "96x" }}
-                      className="img-sm rounded border"
-                    />
-                  </div>
-                  <div className="">
-                    <a href="#" className="nav-link">
-                      Gaming Headset with Mic <br />
-                      Darkblue color
-                    </a>
-                    <div className="price text-muted">Total: $295.99</div>
-                  </div>
-                </div>
+                  <hr />
+                  <h6 className="text-dark my-4">Items in cart</h6>
 
-                <div className="d-flex align-items-center mb-4">
-                  <div className="me-3 position-relative">
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                      1
-                    </span>
-                    <img
-                      src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/5.webp"
-                      style={{ height: "96px", width: "96x" }}
-                      className="img-sm rounded border"
-                    />
+                  <div className="d-flex align-items-center mb-4">
+                    <div className="me-3 position-relative">
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
+                        1
+                      </span>
+                      <img
+                        src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/7.webp"
+                        style={{ height: "96px", width: "96x" }}
+                        className="img-sm rounded border"
+                      />
+                    </div>
+                    <div className="">
+                      <a href="#" className="nav-link">
+                        Gaming Headset with Mic <br />
+                        Darkblue color
+                      </a>
+                      <div className="price text-muted">Total: $295.99</div>
+                    </div>
                   </div>
-                  <div className="">
-                    <a href="#" className="nav-link">
-                      Apple Watch Series 4 Space <br />
-                      Large size
-                    </a>
-                    <div className="price text-muted">Total: $217.99</div>
-                  </div>
-                </div>
 
-                <div className="d-flex align-items-center mb-4">
-                  <div className="me-3 position-relative">
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                      3
-                    </span>
-                    <img
-                      src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/1.webp"
-                      style={{ height: "96px", width: "96x" }}
-                      className="img-sm rounded border"
-                    />
+                  <div className="d-flex align-items-center mb-4">
+                    <div className="me-3 position-relative">
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
+                        1
+                      </span>
+                      <img
+                        src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/7.webp"
+                        style={{ height: "96px", width: "96x" }}
+                        className="img-sm rounded border"
+                      />
+                    </div>
+                    <div className="">
+                      <a href="#" className="nav-link">
+                        Gaming Headset with Mic <br />
+                        Darkblue color
+                      </a>
+                      <div className="price text-muted">Total: $295.99</div>
+                    </div>
                   </div>
-                  <div className="">
-                    <a href="#" className="nav-link">
-                      GoPro HERO6 4K Action Camera - Black
-                    </a>
-                    <div className="price text-muted">Total: $910.00</div>
+
+                  <div className="d-flex align-items-center mb-4">
+                    <div className="me-3 position-relative">
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
+                        1
+                      </span>
+                      <img
+                        src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/5.webp"
+                        style={{ height: "96px", width: "96x" }}
+                        className="img-sm rounded border"
+                      />
+                    </div>
+                    <div className="">
+                      <a href="#" className="nav-link">
+                        Apple Watch Series 4 Space <br />
+                        Large size
+                      </a>
+                      <div className="price text-muted">Total: $217.99</div>
+                    </div>
+                  </div>
+
+                  <div className="d-flex align-items-center mb-4">
+                    <div className="me-3 position-relative">
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
+                        3
+                      </span>
+                      <img
+                        src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/1.webp"
+                        style={{ height: "96px", width: "96x" }}
+                        className="img-sm rounded border"
+                      />
+                    </div>
+                    <div className="">
+                      <a href="#" className="nav-link">
+                        GoPro HERO6 4K Action Camera - Black
+                      </a>
+                      <div className="price text-muted">Total: $910.00</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            }
+
+
           </div>
         </div>
       </section>
