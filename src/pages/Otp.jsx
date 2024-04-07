@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 import "../styling/otp.css";
 import { Link, useLocation } from "react-router-dom";
 import { Context } from "../context/Context";
@@ -54,7 +54,7 @@ function Otp(props) {
 
   return (
     <>
-      <Navbar />
+      <NavbarV2 />
       <div className="otp-page">
         <div className="otp-card">
           <h2>OTP Verification</h2>

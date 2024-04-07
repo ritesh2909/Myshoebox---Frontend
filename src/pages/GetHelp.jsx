@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 
 function GetHelp() {
   return (
     <>
-      <Navbar />
+      <NavbarV2 />
       Get Help Page, Content to be written here
     </>
   );

@@ -64,6 +64,19 @@ const Reducer = (state, action) => {
         isFetching: false,
         error: true,
       };
+    case "SET_PAYMENT_TRIGGER":
+      console.log("Reducer received payload:", action.payload);
+      return {
+        ...state,
+        sessionId: action.payload,
+        isPaymentTriggered: true,
+        triggered: false
+      };
+    case "PAYMENT_PROCESSED":
+      return {
+        ...state,
+        isPaymentTriggered: false,
+      };
     default:
       return state;
   }

@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 
 function Failure() {
   return (
     <>
-      <Navbar />
+      <NavbarV2 />
       This is a default error page
     </>
   );

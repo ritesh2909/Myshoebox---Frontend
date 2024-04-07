@@ -137,7 +137,7 @@ function CartSummary(props) {
 
                   <div className="d-flex justify-content-between" style={{ marginTop: "20px" }}>
                     <p className="mb-2">Final Amount</p>
-                    <p className="mb-2">₹ {Number(transaction.totalAmount.toFixed(2)) - Number(transaction.taxAmount.toFixed(2))}</p>
+                    <p className="mb-2">₹ {Number(transaction.totalAmount - transaction.taxAmount).toFixed(2)}</p>
                   </div>
                   <div className="d-flex justify-content-between">
                     <p className="mb-2">TAX (18%)</p>

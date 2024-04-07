@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 import { useContext, useState, useEffect } from "react";
 import { Context } from "../context/Context";
 import axios from "axios";
@@ -82,7 +82,7 @@ function Profile() {
 
   return (
     <>
-      <Navbar />
+      <NavbarV2 />
       {user && (
         <div className="container">
           {" "}

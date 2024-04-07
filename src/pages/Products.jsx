@@ -1,12 +1,12 @@
 import React from "react";
 import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 import MainProducts from "../components/MainProducts";
 
 function Products() {
   return (
     <>
-      <Navbar />
+      <NavbarV2 />
       <div className="v2-content" style={{ marginTop: "50px" }}>
         <MainProducts  />
       </div>
