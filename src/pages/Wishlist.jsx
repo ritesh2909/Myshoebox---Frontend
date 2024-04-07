@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 import WishListItems from "../components/wishList/WishListItems";
 import { Context } from "../context/Context";
 import axios from "axios";
@@ -40,7 +40,7 @@ function Wishlist({ history }) {
 
   return (
     <div>
-      <Navbar />
+      <NavbarV2 />
       <WishListItems props={products} />
       <Footer />
     </div>

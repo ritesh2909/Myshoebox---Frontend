@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 
 function Register() {
   return (
     <>
-      <Navbar />
+      <NavbarV2 />
       <section
         className="vh-100 bg-image"
         style={{

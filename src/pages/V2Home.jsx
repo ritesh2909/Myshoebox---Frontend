@@ -3,7 +3,7 @@ import Blog from "../components/Blog";
 import Feature from "../components/Feature";
 import Footer from "../components/Footer";
 import ProductList from "../components/ProductList";
-import V2Navbar from "../components/V2Navbar";
+import NavbarV2 from "../components/NavbarV2";
 
 function V2Home() {
   return (
@@ -74,8 +74,8 @@ function V2Home() {
           </div>
         </div>
 
-        {/* navbar */}
-        <V2Navbar />
+        {/* NavbarV2 */}
+        <NavbarV2 />
         <div className="bg-primary text-white py-5">
           <div className="container py-5">
             <h1>

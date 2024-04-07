@@ -37,7 +37,7 @@ function ProductListItem(props) {
       console.log(error)
       if (error.response && error.response.status == 401) {
         window.alert("Please try logging in!");
-        dispatch({ type: "LOGOUT"})
+        dispatch({ type: "LOGOUT" })
         localStorage.removeItem('token');
 
         // Add your code to show the login/signup popup here
@@ -47,7 +47,7 @@ function ProductListItem(props) {
     }
   };
 
-  const addToCart = async (e) => {
+  const addToCart = async (productInfoId, e) => {
     e.preventDefault();
     if (!token) {
       window.alert("Login to add to Cart");
@@ -55,31 +55,31 @@ function ProductListItem(props) {
     }
 
     try {
-      console.log(props.product.productId)
       const addToCart = await axios.post(
-        URL + `/api/cart/add-to-cart`,
-        { color: props.product.defaultVarient.color, size: props.product.defaultVarient.size, productId: props.product.productId },
+        URL + `/api/cart/add-to-cart/${productInfoId}`,
+        { quantity: 1 },
         { headers }
       );
       console.log(addToCart)
 
-      if (addToCart.status == 200) {
-        window.alert(addToCart.data);
-      } else if (addToCart.response.status == 401) {
-        window.alert("Please try log in!");
-      }
+      // if (addToCart.status == 200) {
+      //   window.alert(addToCart.data);
+      // } else if (addToCart.response.status == 401) {
+      //   window.alert("Please try log in!");
+      // }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        window.alert("Please try logging in!");
-        dispatch({ type: "LOGOUT" })
-        // Add your code to show the login/signup popup here
-      } else if (error.response.status == 400) {
-        window.alert(error.response.data)
-      } 
-      else {
-        console.log("Other error:", error);
-      }
-      
+      console.log(error)
+      // if (error.response && error.response.status === 401) {
+      //   window.alert("Please try logging in!");
+      //   dispatch({ type: "LOGOUT" })
+      //   // Add your code to show the login/signup popup here
+      // } else if (error.response.status == 400) {
+      //   window.alert(error.response.data)
+      // } 
+      // else {
+      //   console.log("Other error:", error);
+      // }
+
     }
   };
 
@@ -120,7 +120,7 @@ function ProductListItem(props) {
           </div>
 
           <div className="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-            <button className="btn btn-outline-primary" onClick={addToCart} >Add to cart</button>
+            <button className="btn btn-outline-primary" onClick={(e) => addToCart(props.product.defaultVarient._id, e)} >Add to cart</button>
             <button
               className="btn btn-outline-primary"
               style={{ marginLeft: "30px" }}

@@ -6,6 +6,8 @@ const INITIAL_STATE = {
   token: JSON.parse(localStorage.getItem("token")) || null,
   isFetching: false,
   error: false,
+  sessionId: "", 
+  isPaymentTriggered: false,
 };
 
 export const Context = createContext(INITIAL_STATE);
@@ -16,7 +18,6 @@ export const ContextProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("token", JSON.stringify(state.token));
   }, [state.token]);
-
   
 
   return (
@@ -25,6 +26,8 @@ export const ContextProvider = ({ children }) => {
         token: state.token,
         isFetching: state.isFetching,
         error: state.error,
+        sessionId: state.sessionId,
+        isPaymentTriggered: state.isPaymentTriggered,
         dispatch,
       }}
     >

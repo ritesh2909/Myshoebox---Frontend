@@ -1,7 +1,7 @@
 import React from "react";
 import BagItems from "../components/BagItems";
 import BagSummary from "../components/BagSummary";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 import Footer from "../components/Footer";
 import { useContext, useState, useEffect } from "react";
 import { Context } from "../context/Context";
@@ -39,7 +39,7 @@ function Bag() {
 
   return (
     <>
-      <Navbar />
+      <NavbarV2 />
       <section className="container">
         <div
           style={{

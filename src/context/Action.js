@@ -34,3 +34,12 @@ export const UpdateSuccess = () => ({
 export const UpdateFailure = () => ({
   type: "UPDATE_FAILURE",
 });
+
+export const SetPaymentTrigger = (sessionId) => ({
+  type: "SET_PAYMENT_TRIGGER",
+  payload: sessionId,
+});
+
+export const PaymentProcessed = () => ({
+  type: "PAYMENT_PROCESSED",
+});

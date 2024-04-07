@@ -2,12 +2,13 @@ import React from "react";
 import CartSummary from "../components/CartSummary";
 import RecommendCart from "../components/RecommendCart";
 import CartHeader from "../components/CartHeader";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 import Footer from "../components/Footer";
 import { useContext, useState, useEffect } from "react";
 import { Context } from "../context/Context";
 import axios from "axios";
 import { URL } from "../config/endpoint"
+import Loader from "../components/loader/Loader";
 
 function Cart() {
 
@@ -19,19 +20,19 @@ function Cart() {
 
   const [cartItems, setCartItems] = useState([]);
   const [transactionInfo, setTransactionInfo] = useState({})
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     const getCartInfo = async () => {
       if (!token) {
         window.alert("Login to add items to cart!");
         return null;
       }
-
       try {
-
         const url = `${URL}/api/cart/getCartItem`;
         const cartInfo = await axios.get(url, { headers });
         setCartItems(cartInfo.data.cartItem);
         setTransactionInfo(cartInfo.data.transaction)
+        setLoading(false)
       } catch (error) {
         if (error.response && error.response.status === 401) {
           window.alert("Please try logging in!");
@@ -44,19 +45,28 @@ function Cart() {
     };
     getCartInfo();
   }, []);
-  
+
   return (
     <>
-      <Navbar />
+      <NavbarV2 />
       <CartHeader />
-      {cartItems.length > 0 ? <CartSummary cartProducts={cartItems} transaction={transactionInfo} /> : <>
+      {/* Conditional rendering based on loading state */}
+      {loading ? (
 
-    Add items to cart
+        <Loader />
 
-      </> }
-
-      <RecommendCart />
-      <Footer />
+      ) : (
+        <>
+          {cartItems.length > 0 ? (
+            <CartSummary cartProducts={cartItems} transaction={transactionInfo} />
+          ) : (
+            <div>Add items to cart</div>
+          )}
+          <RecommendCart />
+          <Footer />
+        </>
+      )
+      }
     </>
   );
 }

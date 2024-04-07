@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 import Footer from "../components/Footer";
 import NotFound from "../pages/NotFound";
 import { useContext, useState, useEffect } from "react";
@@ -178,7 +178,7 @@ function SingleProduct() {
           className="nav"
           style={{ position: "fixed", top: 0, left: 0, width: "100%" }}
         > */}
-        <Navbar />
+        <NavbarV2 />
         {/* </div> */}
 
         <header style={{ marginTop: "55px" }}>

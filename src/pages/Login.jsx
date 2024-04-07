@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 import { Context } from "../context/Context";
 import { LoginFailure, LoginStart, LoginSuccess } from "../context/Action";
 import  {URL}  from "../config/endpoint";
@@ -46,7 +46,7 @@ function Login() {
 
   return (
     <>
-      <Navbar />
+      <NavbarV2 />
       <section
         className="vh-100 bg-image"
         style={{

@@ -1,7 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { useState } from "react";
-import Navbar from "../components/Navbar";
+import NavbarV2 from "../components/NavbarV2";
 import { CircularProgress } from "@material-ui/core";
 import { Context } from "../context/Context";
 import axios from "axios";
@@ -62,7 +62,7 @@ function SignIn() {
     <>
     {otpSent ? <Otp mobile = {mobileNumber} /> : <>
     
-    <Navbar />
+    <NavbarV2 />
       <div className="container">
         <div className="container">
           <div className="container">
