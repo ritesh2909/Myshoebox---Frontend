@@ -21,7 +21,7 @@ function Home() {
       </div>
       <div  style={{ width: "40%" }}>
                <video controls>
-              <source src="https://s3.ap-south-1.amazonaws.com/testbucket3.0/VID_20230901_222523.mp4" type="video/mp4" />
+              <source src="https://misfits-images.s3.ap-south-1.amazonaws.com/0068F40B875C.mp4" type="video/mp4" />
               Your browser does not support the video tag.
               </video>    
         
