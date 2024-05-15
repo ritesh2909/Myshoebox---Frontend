@@ -19,7 +19,7 @@ function Home() {
       <div className="carousel" style={{ marginTop: "50px" }}>
         <Carousel />
       </div>
-      <div  style={{ width: "70%" }}>
+      <div  style={{ width: "40%" }}>
                <video controls>
               <source src="https://s3.ap-south-1.amazonaws.com/testbucket3.0/VID_20230901_222523.mp4" type="video/mp4" />
               Your browser does not support the video tag.
