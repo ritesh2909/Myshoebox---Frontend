@@ -18,10 +18,13 @@ function Home() {
       <NavbarV2 />
       <div className="carousel" style={{ marginTop: "50px" }}>
         <Carousel />
-        <video controls>
+      </div>
+      <div  style={{ width: "70%" }}>
+               <video controls>
               <source src="https://s3.ap-south-1.amazonaws.com/testbucket3.0/VID_20230901_222523.mp4" type="video/mp4" />
               Your browser does not support the video tag.
               </video>    
+        
       </div>
       {/* <OffShore /> */}
       <ProductList />
