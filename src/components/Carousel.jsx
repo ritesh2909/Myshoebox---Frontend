@@ -58,6 +58,13 @@ function Carousel() {
               alt="..."
             />
           </div>
+           <div className="carousel-item">
+            <img
+              src="https://misfits-images.s3.ap-south-1.amazonaws.com/1546.jpeg"
+              className="d-block w-100"
+              alt="..."
+            />
+          </div>
         </div>
         <button
           className="carousel-control-prev"
