@@ -1,5 +1,5 @@
 // const URL = "http://localhost:5000"
-const URL = "https://gray-elated-lemur.cyclic.app/"
+const URL = "https://cleverpalm-chill.toystack.dev/"
 
 const appRoutes = {
   Register : "/register",
