@@ -1,5 +1,5 @@
 // const URL = "http://localhost:5000"
-const URL = "https://myshoebox-production.up.railway.app/"
+const URL = "https://myshoebox-production.up.railway.app"
 
 const appRoutes = {
   Register : "/register",
