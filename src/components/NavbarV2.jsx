@@ -1,21 +1,14 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import { appRoutes } from "../config/endpoint";
+import "./offshors.css";
+import CartV2 from './cartv2/CartV2';
 
 function OffShore() {
   return (
-    <div className="offcanvas offcanvas-end" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel" data-bs-backdrop="true">
-      <div className="offcanvas-header">
-        <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Backdrop with scrolling</h5>
-        <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div className="">
-        This content needs to be visible only on clicking the cart icon
-      </div>
-      <div className="offcanvas-body">
-        <p>Try scrolling the rest of the page to see this option in action.</p>
-      </div>
-    </div>
+    <div className="offcanvas offcanvas-end custom-offcanvas" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel" data-bs-backdrop="true">
+      <CartV2 />
+    </div >
   );
 }
 

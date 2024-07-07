@@ -20,6 +20,7 @@ function Bag() {
 
   useEffect(() => {
     const getCartInfo = async () => {
+      document.title = "Cart";
       if (!token) {
         window.alert("Login to add items to cart!");
         return null;

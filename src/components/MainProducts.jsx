@@ -5,9 +5,8 @@ import { Context } from "../context/Context";
 import { URL } from "../config/endpoint";
 import { useLocation, useParams } from 'react-router-dom';
 import NoProductFound from "./NoProductFound";
-
-
 import axios from "axios";
+
 function MainProducts() {
   const { gender } = useParams();
   const location = useLocation();
@@ -110,6 +109,7 @@ function MainProducts() {
     let gender;
     if (hasGenderParam) {
       gender = searchParams.get("gender")
+        document.title = `Online ${gender}s Footwear shopping site - MyShoebox`
     }
     console.log(gender)
     const fetchProducts = async () => {
