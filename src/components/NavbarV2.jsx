@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import { appRoutes } from "../config/endpoint";
-import "./offshors.css";
 import CartV2 from './cartv2/CartV2';
 
 function OffShore() {
