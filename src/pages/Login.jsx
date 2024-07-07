@@ -44,6 +44,11 @@ function Login() {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  useEffect(() => {
+    document.title = 'MyShoebox'
+  }, [])
+  
+
   return (
     <>
       <NavbarV2 />

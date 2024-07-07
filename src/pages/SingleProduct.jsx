@@ -157,6 +157,7 @@ function SingleProduct() {
         setAvailableSizes(
           await getAvailableSizes(productInfo.data.productVarients)
         );
+        document.title = productInfo.data.defaultVarient.title + ' - MyShoebox';
       } else {
         setNotFound(true)
       }

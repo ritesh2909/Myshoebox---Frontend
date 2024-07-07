@@ -12,6 +12,12 @@ import NavbarV2 from "../components/NavbarV2";
 import V2Home from "./V2Home";
 
 function Home() {
+
+  useEffect(() => {
+    document.title = 'Online Shopping for Men, Women, Kids Fashion Shoes - MyShoebox';
+  }, [])
+  
+
   console.log("Home page rendered")
   return (
     <>
