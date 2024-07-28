@@ -20,7 +20,7 @@ function SingleProduct() {
   };
 
   const location = useLocation();
-  const { id } = useParams(); // Access route parameter "id"
+  const { id } = useParams();
   const queryParams = new URLSearchParams(location.search); // Access query parameters
   const color = queryParams.get("color");
 
@@ -164,7 +164,7 @@ function SingleProduct() {
     };
 
     getProductInfo();
-  }, []);
+  }, [id, color]);
 
   if (notFound) {
     return (<>
