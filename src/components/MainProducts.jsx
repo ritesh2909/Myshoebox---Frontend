@@ -182,27 +182,6 @@ function MainProducts() {
   return (
     <>
       {/* later todo top blue section -> stepper */}
-      <header style={{ marginTop: "55px" }}>
-        <div className="bg-primary">
-          <div className="container py-4">
-            <nav className="d-flex">
-              <h6 className="mb-0">
-                <Link to={"/"} className="text-white-50">
-                  Home
-                </Link>
-                <span className="text-white-50 mx-2"> &gt; </span>
-                <a href="" className="text-white-50">
-                  Library
-                </a>
-                <span className="text-white-50 mx-2"> &gt; </span>
-                <a href="" className="text-white">
-                  <u>Data</u>
-                </a>
-              </h6>
-            </nav>
-          </div>
-        </div>
-      </header>
       <br />
       <br />
 

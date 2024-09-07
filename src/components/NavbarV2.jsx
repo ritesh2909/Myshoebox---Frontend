@@ -11,6 +11,11 @@ function OffShore() {
   );
 }
 
+ const handleReload = (e) => {
+    e.preventDefault(); // Prevents the default navigation
+    window.location.href = "/"; // Sets the href to the homepage URL
+  };
+
 function NavbarV2() {
 
   return (
@@ -19,7 +24,7 @@ function NavbarV2() {
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-custom fixed-top px-8" style={{ minHeight: "85px", margin: "0 auto", paddingLeft: "30px", paddingRight: "30px" }} >
         <div class="container-fluid">
-          <Link className="navbar-brand" to="/" style={{ marginLeft: "20px" }} >
+          <Link className="navbar-brand" to="/" style={{ marginLeft: "20px" }} onClick={handleReload} >
             MyShoeBox
           </Link>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
